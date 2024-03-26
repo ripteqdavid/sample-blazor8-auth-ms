@@ -1,0 +1,46 @@
+﻿@page "/Admin/Setup"
+@attribute [StreamRendering]
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration
+
+@inject RoleManager<IdentityRole> roleManager
+@inject UserManager<IdentityUser> userManager
+@inject IConfiguration  config
+
+<h3>SetupAuth</h3>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SetupAuth();
+        await base.OnInitializedAsync();
+    }
+
+
+    private async Task SetupAuth()
+    {
+        List<string> roles = new List<string>();
+        roles.Add("Administrator");
+        roles.Add("Operations");
+        roles.Add("Payroll");
+        roles.Add("Driver");
+
+        foreach (var role in roles)
+        {
+            var roleExists = await roleManager.RoleExistsAsync(role);
+            if (roleExists == false)
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+
+        var user = await userManager.FindByEmailAsync("david@ripteq.com.au");
+        if (user != null)
+        {
+            await userManager.AddToRoleAsync(user, "Administrator");
+        }
+    }
+
+
+}
