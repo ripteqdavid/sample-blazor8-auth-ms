@@ -151,7 +151,7 @@ else
 	- Add CookieHandler.cs
 	- Add Services > HostingEnvironmentService.cs (not required but handy)
 	- Update Program.cs (as per GitHub)
-- \Server:
+- Server:
 	- Update PersistingRevalidatingAuthenticationStateProvider.cs to include Roles
 	- Update Program.cs
 		- Include Database Seeding Function (Roles and Default User)
@@ -170,7 +170,6 @@ else
     </Found>
 </Router>
 ```
-
 
 ### Minimal API
 - These have been moved to as static configuration file (Endpoints > Api.cs)
