@@ -17,6 +17,15 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 <AuthorizeView>
     <p>@Username is authorised</p>
+    <button class="btn btn-secondary" @onclick="DifferentPing">Auth Ping</button>
+    <ul>
+        @{
+            foreach (var item in pings)
+            {
+                <li>@item</li>
+            }
+        }
+    </ul>
 </AuthorizeView>
 <AuthorizeView Roles="Admin">
     <p>Admin Role Unlocks Authorized Ping Data:</p>
@@ -27,21 +36,25 @@
                 <li>@item</li>
             }
         }
-</ul>
+    </ul>
 </AuthorizeView>
 
 
 @code {
     private int currentCount = 0;
+    private HttpClient client = default!;
+
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationState { get; set; }
 
     private string Username = "";
     private string Environ = "";
-    private List<string> pings = new List<string>();
+    private List<string> pings = [];
 
     protected override async Task OnInitializedAsync()
     {
+        client = HttpClientFactory.CreateClient("API");
+
         if (authenticationState is not null)
         {
             var state = await authenticationState;
@@ -61,7 +74,6 @@
 
     private async Task SayHello()
     {        
-        var client = HttpClientFactory.CreateClient("API");
         Environ = HostingEnvironmentService.EnvironmentName;
 
         try
@@ -70,8 +82,23 @@
         }
         catch (Exception exc)
         {
+            // this is because I'm not an admin
             Logger.LogError(exc, "Error in SayHello");
             Environ = $"Auth Failure | {HostingEnvironmentService.EnvironmentName}";
-        }       
+        }   
+    }
+
+    private async Task DifferentPing()
+    {
+        try
+        {
+            var result = await client.GetStringAsync("api/Pang");
+            pings.Add(result);
+            StateHasChanged();
+        }
+        catch (Exception exc)
+        {
+            Logger.LogError(exc, "Error in DifferentPing");
+        }
     }
 }
