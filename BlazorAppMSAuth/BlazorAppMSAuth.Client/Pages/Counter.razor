@@ -3,6 +3,7 @@
 @using BlazorAppMSAuth.Client.Services
 @inject IHttpClientFactory HttpClientFactory
 @inject HostingEnvironmentService HostingEnvironmentService
+@inject ILogger<Counter> Logger
 @rendermode InteractiveAuto
 @* @rendermode InteractiveWebAssembly *@
 
@@ -57,8 +58,8 @@
     {
         currentCount++;
     }
-    
-        private async Task SayHello()
+
+    private async Task SayHello()
     {        
         var client = HttpClientFactory.CreateClient("API");
         Environ = HostingEnvironmentService.EnvironmentName;
@@ -67,12 +68,10 @@
         {
             pings = await client.GetFromJsonAsync<List<string>>("api/Ping") ?? new List<string>();
         }
-        catch (Exception)
+        catch (Exception exc)
         {
+            Logger.LogError(exc, "Error in SayHello");
             Environ = $"Auth Failure | {HostingEnvironmentService.EnvironmentName}";
-        }
-        
-
+        }       
     }
-
 }
