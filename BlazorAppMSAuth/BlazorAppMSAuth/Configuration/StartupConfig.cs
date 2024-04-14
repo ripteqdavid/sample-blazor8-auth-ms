@@ -8,7 +8,6 @@ namespace BlazorAppMSAuth.Configuration
         public static void AddStandardServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddEndpointsApiExplorer();
-
             builder.AddSwaggerServices();
         }
 
@@ -38,7 +37,6 @@ namespace BlazorAppMSAuth.Configuration
     new string[] { }
     }
 };
-
 
             builder.Services.AddSwaggerGen(opts =>
             {
@@ -76,8 +74,8 @@ namespace BlazorAppMSAuth.Configuration
                 opts.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "TalkBack Api",
-                    Description = "Talk Back API"
+                    Title = "API",
+                    Description = "Demo API"
                 });
             });
         }

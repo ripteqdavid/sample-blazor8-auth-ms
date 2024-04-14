@@ -26,11 +26,24 @@ namespace BlazorAppMSAuth.Client
                 return;
             }
 
-            Claim[] claims = [
+            var claims = new List<Claim>
+            {
                 new Claim(ClaimTypes.NameIdentifier, userInfo.UserId),
                 new Claim(ClaimTypes.Name, userInfo.Email),
-                new Claim(ClaimTypes.Role, userInfo.Role),
-                new Claim(ClaimTypes.Email, userInfo.Email) ];
+                new Claim(ClaimTypes.Email, userInfo.Email)
+            };
+
+            // Dynamically add a claim for each role in the user's Roles list
+            if (userInfo.Roles != null)
+            {
+                foreach (var role in userInfo.Roles)
+                {
+                    if (!string.IsNullOrEmpty(role))
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                    }
+                }
+            }
 
             authenticationStateTask = Task.FromResult(
                 new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims,

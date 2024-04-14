@@ -13,8 +13,13 @@ builder.Services.AddScoped<HostingEnvironmentService>();
 builder.Services
     .AddTransient<CookieHandler>()
     .AddScoped(sp => sp
-        .GetRequiredService<IHttpClientFactory>()
-        .CreateClient("API"))
-    .AddHttpClient("API", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)).AddHttpMessageHandler<CookieHandler>();
+    .GetRequiredService<IHttpClientFactory>()
+    .CreateClient("API"))
+    .AddHttpClient("API", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+    .AddHttpMessageHandler<CookieHandler>();
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 
 await builder.Build().RunAsync();
