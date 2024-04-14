@@ -4,8 +4,9 @@
 @inject IHttpClientFactory HttpClientFactory
 @inject HostingEnvironmentService HostingEnvironmentService
 @inject ILogger<Counter> Logger
-@rendermode InteractiveAuto
+@* @rendermode InteractiveAuto *@
 @* @rendermode InteractiveWebAssembly *@
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
 
 <PageTitle>Counter</PageTitle>
 
