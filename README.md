@@ -1,7 +1,8 @@
-# Sample Blazor Application with Authentication
+# Sample Blazor .Net 8 App Application with Authentication
 
 ## Overview
 This sample has been cobble together using a raft of resources.  The premise is to demonstrate a basic Blazor .Net 8 application that:
+- Uses both Server and Client pages
 - Uses the Microsoft Identity provider
 - Implements roles
 - Includes database migrations as part of the program.cs
