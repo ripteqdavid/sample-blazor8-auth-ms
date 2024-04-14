@@ -18,9 +18,20 @@ public static class Api
         groupAuth.MapGet("ping", BasicPing)
            .RequireAuthorization(policy => policy.RequireRole("Admin"));
 
+        // ping with minimal auth (no roles, etc)
+        groupAuth.MapGet("pang", DifferentPing)
+            .RequireAuthorization();
+
         groupNoAuth.MapGet("pong", NoAuthPing)
             .AllowAnonymous();
 
+    }
+
+    private static IResult DifferentPing(HttpContext context)
+    {
+        var message = "Different Ping with Auth";
+        Log.Information(message);
+        return Results.Ok(message);
     }
 
     private static async Task<IResult> BasicPing(IConfiguration _config, HttpContext context)
@@ -50,10 +61,7 @@ public static class Api
         {
             Log.Error("Failed Basic Ping with Auth {ex}", ex);
             return Results.BadRequest(ex.Message);
-
         }
-
-        Log.Information("Basic Ping with Auth Complete");
     }
 
     private static async Task<IResult> NoAuthPing()
@@ -69,7 +77,6 @@ public static class Api
             result.Add($"OS Version: {Environment.OSVersion.ToString() ?? ""}");
 
             return Results.Ok(result);
-            Log.Information("NoAuth Ping Complete");
         }
         catch (Exception ex)
         {
