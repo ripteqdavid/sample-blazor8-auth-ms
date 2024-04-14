@@ -18,7 +18,7 @@ public static class Api
         groupAuth.MapGet("ping", BasicPing)
            .RequireAuthorization(policy => policy.RequireRole("Admin"));
 
-        // ping with minimal auth (no roles, etc) -- not working
+        // ping with minimal auth (no roles, etc)
         groupAuth.MapGet("pang", DifferentPing)
             .RequireAuthorization();
 
