@@ -1,11 +1,15 @@
 ﻿@page "/weather"
-@attribute [StreamRendering]
+@using BlazorAppMSAuth.Helpers
+@* @attribute [StreamRendering] *@
+@rendermode @(new InteractiveServerRenderMode(false))
+@inject TimeProvider timeProvider
 
 <PageTitle>Weather</PageTitle>
 
 <h1>Weather</h1>
 
 <p>This component demonstrates showing data.</p>
+<p>@now</p>
 
 @if (forecasts == null)
 {
@@ -38,6 +42,9 @@ else
 
 @code {
     private WeatherForecast[]? forecasts;
+    protected DateTime now;
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,6 +59,13 @@ else
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = summaries[Random.Shared.Next(summaries.Length)]
         }).ToArray();
+    }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // Calculate the local date/time from the users browser in code
+        now = timeProvider.ToLocalDateTime(DateTime.UtcNow);
     }
 
 

@@ -91,6 +91,7 @@ builder.Host.UseSerilog((context, config) =>
 });
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+builder.Services.AddBrowserTimeProvider();
 
 var app = builder.Build();
 

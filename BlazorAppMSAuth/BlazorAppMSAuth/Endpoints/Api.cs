@@ -67,7 +67,6 @@ public static class Api
             result.Add($"Environment: {Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? ""}");
             result.Add($"Machine Name: {Environment.MachineName}");
             result.Add($"OS Version: {Environment.OSVersion.ToString() ?? ""}");
-            result.Add($"OS Version: {Environment.OSVersion.ToString() ?? ""}");
 
             return Results.Ok(result);
             Log.Information("NoAuth Ping Complete");

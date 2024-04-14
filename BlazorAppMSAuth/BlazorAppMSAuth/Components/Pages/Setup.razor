@@ -10,7 +10,7 @@
 <h3>SetupAuth</h3>
 
 @code {
-
+    // An Alternative to runing seeding in Program.cs is to have a setup page
     protected override async Task OnInitializedAsync()
     {
         await SetupAuth();
@@ -35,7 +35,8 @@
             }
         }
 
-        var user = await userManager.FindByEmailAsync("david@ripteq.com.au");
+        string userEmail = config.GetValue<string>("DefaultUser:Email") ?? "";
+        var user = await userManager.FindByEmailAsync(userEmail);
         if (user != null)
         {
             await userManager.AddToRoleAsync(user, "Administrator");
