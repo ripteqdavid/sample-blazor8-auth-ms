@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
-using Microsoft.AspNetCore.Http;
 
 namespace BlazorAppMSAuth.Services;
 public class BlazorAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
@@ -19,10 +18,10 @@ public class BlazorAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewa
 
             if (authorizeResult.Challenged)
             {
-                // Trigger an authentication challenge
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                await context.Response.WriteAsync("Unauthorized: You need to authenticate to access this resource.");
-                return; // Prevent further processing after handling the challenge
+                // Redirect to login page
+                context.Response.StatusCode = StatusCodes.Status302Found; // HTTP 302 for redirection
+                context.Response.Headers.Location = "/Account/Login"; // Redirect to the login page
+                return; // Prevent further processing after setting the redirect
             }
         }
 
